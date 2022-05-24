@@ -18,6 +18,30 @@ const GetPlaces = async (req, res) => {
   return res.status(200).json(response)
 }
 
-PlacesRouter.get('/', GetPlaces)
+const GetPlacesCategory = async (req, res) => {
+  const { latitude, longitude, radius } = req.body
+
+  const response = await PlacesRequests.getAllCategory(
+    latitude,
+    longitude,
+    radius
+  )
+
+  return res.status(200).json(response)
+}
+
+const GetPlaceByIdLocation = async (req, res) => {
+  const { id } = req.params
+
+  const response = await PlacesRequests.getPlaceById(id)
+
+  return res.status(200).json(response)
+}
+
+PlacesRouter.get('/all', GetPlaces)
+
+PlacesRouter.get('/:id', GetPlaceByIdLocation)
+
+PlacesRouter.get('/category', GetPlacesCategory)
 
 module.exports = PlacesRouter
