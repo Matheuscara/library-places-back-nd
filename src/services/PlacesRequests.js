@@ -9,14 +9,13 @@ const UrlGoogleMapsApi =
 
 async function getAllPlaces(latitude, longitude, radius, type) {
   try {
-
     const response = await axios.get(
       `${UrlGoogleApi}location=${latitude}%2C${longitude}&radius=${radius}&key=${
         process.env.GOOGLE_PLACES_KEY
       }${type && '&type=' + type}`
     )
 
-    const places = response.data.results.map(( element ) => {
+    const places = response.data.results.map((element) => {
       return {
         name: element.name,
         place_id: element.place_id,
@@ -28,7 +27,7 @@ async function getAllPlaces(latitude, longitude, radius, type) {
         },
       }
     })
-    
+
     return places
   } catch (e) {
     return e
@@ -42,7 +41,7 @@ async function getAllCategory(latitude, longitude, radius) {
     const response = await axios.get(
       `${UrlGoogleApi}location=${latitude}%2C${longitude}&radius=${radius}&key=${process.env.GOOGLE_PLACES_KEY}`
     )
-
+     
     response.data.results.map((element) =>
       element.types.map((type) => {
         if (!categories.find((category) => category === type)) {
@@ -67,7 +66,7 @@ async function getPlaceById(placeId) {
       name: data.result.formatted_address,
       location: {
         latitude: data.result.geometry.location.lat,
-        longitude: data.result.geometry.location.lng
+        longitude: data.result.geometry.location.lng,
       },
     }
   } catch (e) {
