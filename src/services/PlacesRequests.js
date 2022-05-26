@@ -1,4 +1,5 @@
 const axios = require('axios')
+const { switchResponseAxiosRequest } = require('../util/Validations')
 require('dotenv/config')
 
 const UrlGoogleApi =
@@ -15,6 +16,9 @@ async function getAllPlaces(latitude, longitude, radius, type) {
       }${type && '&type=' + type}`
     )
 
+    if (response.data.status !== 'OK')
+      return switchResponseAxiosRequest(response)
+
     const places = response.data.results.map((element) => {
       return {
         name: element.name,
@@ -28,7 +32,10 @@ async function getAllPlaces(latitude, longitude, radius, type) {
       }
     })
 
-    return places
+    return {
+      message: places,
+      status: 200,
+    }
   } catch (e) {
     return e
   }
@@ -41,7 +48,10 @@ async function getAllCategory(latitude, longitude, radius) {
     const response = await axios.get(
       `${UrlGoogleApi}location=${latitude}%2C${longitude}&radius=${radius}&key=${process.env.GOOGLE_PLACES_KEY}`
     )
-     
+
+    if (response.data.status !== 'OK')
+      return switchResponseAxiosRequest(response)
+
     response.data.results.map((element) =>
       element.types.map((type) => {
         if (!categories.find((category) => category === type)) {
@@ -50,7 +60,10 @@ async function getAllCategory(latitude, longitude, radius) {
       })
     )
 
-    return categories
+    return {
+      message: categories,
+      status: 200,
+    }
   } catch (e) {
     return e
   }
@@ -58,16 +71,22 @@ async function getAllCategory(latitude, longitude, radius) {
 
 async function getPlaceById(placeId) {
   try {
-    const { data } = await axios.get(
+    const response = await axios.get(
       `${UrlGoogleMapsApi}place_id=${placeId}&key=${process.env.GOOGLE_PLACES_KEY}`
     )
 
+    if (response.data.status !== 'OK')
+      return switchResponseAxiosRequest(response)
+
     return {
-      name: data.result.formatted_address,
-      location: {
-        latitude: data.result.geometry.location.lat,
-        longitude: data.result.geometry.location.lng,
+      message: {
+        name: response.data.result.formatted_address,
+        location: {
+          latitude: response.data.result.geometry.location.lat,
+          longitude: response.data.result.geometry.location.lng,
+        },
       },
+      status: 200,
     }
   } catch (e) {
     return e
