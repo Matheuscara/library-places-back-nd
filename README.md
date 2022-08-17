@@ -20,16 +20,18 @@ npm run start
 
 ## End-Points
 
+Retorna todos os locais a partir da geolocalizacao
 ```bash
-    /places/all -> Retorna todos os locais a partir da geolocalizacao
+    /places/all
+```
+Retorna as categorias dos locais a partir da geolocalizacao
+```bash
+    /places/categories/:latitude/:longitude/:raio
 ```
 
+Retorna o local a partir do id de indentificacao
 ```bash
-    /places/categories/:latitude/:longitude/:raio -> Retorna as categorias dos locais a partir da geolocalizacao
-```
-
-```bash
-    /places/:id -> Retorna o local a partir do id de indentificacao
+    /places/:id
 ```
 
 ## Tecnologias:
