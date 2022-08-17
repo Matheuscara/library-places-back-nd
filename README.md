@@ -18,6 +18,14 @@ npm install
 npm run start
 ```
 
+## Variaveis de Ambiente
+
+E necessario criar um arquivo .env na diretorio inicial do projeto com suas variaveis de Ambiente da Google para realizar as requisicoes.
+
+```bash
+GOOGLE_PLACES_KEY=SuaSenha
+```
+
 ## End-Points
 
 Retorna todos os locais a partir da geolocalizacao
